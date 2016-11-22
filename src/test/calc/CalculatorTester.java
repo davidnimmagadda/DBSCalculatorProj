@@ -1,7 +1,10 @@
 package test.calc;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
 import org.junit.Test;
-import static org.junit.Assert.*;
+
 import calc.Calculator;
 
 public class CalculatorTester {
@@ -14,16 +17,53 @@ public class CalculatorTester {
 	}
 
 	@Test
-	public void invalidNumbers() {
+	public void binaryOpMisuse() {
 		Calculator cal = new Calculator();
 		String arg = "3,4,5,+";
 		try {
 			cal.calculate(arg);
 			assertFalse(true);
 		} catch (IllegalArgumentException e) {
-			assertEquals("Given Input Malformed", e.getMessage());
+			assertEquals("Stack Size not 2 for Binary Operator", e.getMessage());
 		}
 
+	}
+
+	@Test
+	public void unaryOpMisuse() {
+		Calculator cal = new Calculator();
+		String arg = "3,4,%";
+		try {
+			cal.calculate(arg);
+			assertFalse(true);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Stack Size not 1 for Unary Operator", e.getMessage());
+		}
+	}
+
+	@Test
+	public void invalidNumber() {
+		invalidNumber("3fsh,4,+");
+	}
+
+	@Test
+	public void invalidNumber_2() {
+		invalidNumber(",4,+");
+	}
+
+	@Test
+	public void invalidNumber_3() {
+		invalidNumber(" ,4,+");
+	}
+
+	public void invalidNumber(String arg) {
+		Calculator cal = new Calculator();
+		try {
+			cal.calculate(arg);
+			assertFalse(true);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Invalid Number", e.getMessage());
+		}
 	}
 
 	@Test
