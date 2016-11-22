@@ -17,6 +17,14 @@ public class CalculatorTester {
 	}
 
 	@Test
+	public void divideByZero() {
+		Calculator cal = new Calculator();
+		String arg = "3,0,/";
+		Double res = cal.calculate(arg);
+		assertFalse(!Double.isInfinite(res));
+	}
+
+	@Test
 	public void binaryOpMisuse() {
 		Calculator cal = new Calculator();
 		String arg = "3,4,5,+";
@@ -56,6 +64,11 @@ public class CalculatorTester {
 		invalidNumber(" ,4,+");
 	}
 
+	@Test
+	public void emptyInput() {
+		invalidNumber("");
+	}
+
 	public void invalidNumber(String arg) {
 		Calculator cal = new Calculator();
 		try {
@@ -77,4 +90,16 @@ public class CalculatorTester {
 			assertEquals("Got Unused Numbers", e.getMessage());
 		}
 	}
+
+	@Test
+	public void nullInput() {
+		Calculator cal = new Calculator();
+		try {
+			cal.calculate(null);
+			assertFalse(true);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Null Input", e.getMessage());
+		}
+	}
+
 }
